@@ -1,0 +1,6 @@
+[submodule "vendor/mlspp"]
+	path = vendor/mlspp
+	url = https://github.com/cisco/mlspp.git
+[submodule "vendor/json"]
+	path = vendor/json
+	url = https://github.com/nlohmann/json.git

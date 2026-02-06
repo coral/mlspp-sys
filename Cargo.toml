@@ -1,0 +1,19 @@
+[package]
+name = "mlspp-sys"
+version = "0.1.0"
+edition = "2024"
+links = "mlspp"
+
+[dependencies]
+openssl-sys = "0.9"
+
+[build-dependencies]
+cmake = "0.1"
+cc = "1"
+bindgen = "0.71"
+
+[features]
+default = ["vendored"]
+vendored = []
+system = []
+libdave-compat = []
