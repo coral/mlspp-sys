@@ -59,24 +59,41 @@ typedef struct mlspp_session_t mlspp_session_t;
 
 /** Create a CipherSuite from its numeric ID. Returns NULL on failure. */
 mlspp_cipher_suite_t* mlspp_cipher_suite_create(uint16_t id);
+/** Free a CipherSuite handle. */
 void mlspp_cipher_suite_free(mlspp_cipher_suite_t* cs);
 
+/** Get the numeric ID of this cipher suite. */
 uint16_t mlspp_cipher_suite_id(const mlspp_cipher_suite_t* cs);
+
+/** Get the signature scheme associated with this cipher suite. */
 uint16_t mlspp_cipher_suite_signature_scheme(const mlspp_cipher_suite_t* cs);
+
+/** Get the secret size in bytes for this cipher suite. */
 size_t mlspp_cipher_suite_secret_size(const mlspp_cipher_suite_t* cs);
+
+/** Get the key size in bytes for this cipher suite. */
 size_t mlspp_cipher_suite_key_size(const mlspp_cipher_suite_t* cs);
+
+/** Get the nonce size in bytes for this cipher suite. */
 size_t mlspp_cipher_suite_nonce_size(const mlspp_cipher_suite_t* cs);
 
 /* ========================================================================
  * HPKEPrivateKey
  * ======================================================================== */
 
+/** Generate a new random HPKE private key. Returns NULL on failure. */
 mlspp_hpke_private_key_t* mlspp_hpke_private_key_generate(
     const mlspp_cipher_suite_t* cs);
+
+/** Derive an HPKE private key from a secret. Returns NULL on failure. */
 mlspp_hpke_private_key_t* mlspp_hpke_private_key_derive(
     const mlspp_cipher_suite_t* cs, const uint8_t* secret, size_t secret_len);
+
+/** Parse an HPKE private key from raw bytes. Returns NULL on failure. */
 mlspp_hpke_private_key_t* mlspp_hpke_private_key_parse(
     const mlspp_cipher_suite_t* cs, const uint8_t* data, size_t data_len);
+
+/** Free an HPKE private key handle. */
 void mlspp_hpke_private_key_free(mlspp_hpke_private_key_t* key);
 
 /** Get the raw private key data. Caller must free result with mlspp_bytes_free. */
@@ -99,10 +116,14 @@ mlspp_bytes_t mlspp_hpke_private_key_decrypt(
  * HPKEPublicKey
  * ======================================================================== */
 
+/** Create an HPKE public key from raw bytes. Returns NULL on failure. */
 mlspp_hpke_public_key_t* mlspp_hpke_public_key_from_data(
     const uint8_t* data, size_t data_len);
+
+/** Free an HPKE public key handle. */
 void mlspp_hpke_public_key_free(mlspp_hpke_public_key_t* key);
 
+/** Get the raw public key data. Caller must free result with mlspp_bytes_free. */
 mlspp_bytes_t mlspp_hpke_public_key_data(const mlspp_hpke_public_key_t* key);
 
 /**
@@ -123,17 +144,26 @@ int mlspp_hpke_public_key_encrypt(
  * SignaturePrivateKey
  * ======================================================================== */
 
+/** Generate a new random signature private key. Returns NULL on failure. */
 mlspp_signature_private_key_t* mlspp_signature_private_key_generate(
     const mlspp_cipher_suite_t* cs);
+
+/** Derive a signature private key from a secret. Returns NULL on failure. */
 mlspp_signature_private_key_t* mlspp_signature_private_key_derive(
     const mlspp_cipher_suite_t* cs, const uint8_t* secret, size_t secret_len);
+
+/** Parse a signature private key from raw bytes. Returns NULL on failure. */
 mlspp_signature_private_key_t* mlspp_signature_private_key_parse(
     const mlspp_cipher_suite_t* cs, const uint8_t* data, size_t data_len);
+
+/** Free a signature private key handle. */
 void mlspp_signature_private_key_free(mlspp_signature_private_key_t* key);
 
+/** Get the raw private key data. Caller must free result with mlspp_bytes_free. */
 mlspp_bytes_t mlspp_signature_private_key_data(
     const mlspp_signature_private_key_t* key);
 
+/** Get the associated public key. Caller must free result. */
 mlspp_signature_public_key_t* mlspp_signature_private_key_public_key(
     const mlspp_signature_private_key_t* key);
 
@@ -148,10 +178,14 @@ mlspp_bytes_t mlspp_signature_private_key_sign(
  * SignaturePublicKey
  * ======================================================================== */
 
+/** Create a signature public key from raw bytes. Returns NULL on failure. */
 mlspp_signature_public_key_t* mlspp_signature_public_key_from_data(
     const uint8_t* data, size_t data_len);
+
+/** Free a signature public key handle. */
 void mlspp_signature_public_key_free(mlspp_signature_public_key_t* key);
 
+/** Get the raw public key data. Caller must free result with mlspp_bytes_free. */
 mlspp_bytes_t mlspp_signature_public_key_data(
     const mlspp_signature_public_key_t* key);
 
@@ -167,11 +201,16 @@ int mlspp_signature_public_key_verify(
  * Credential
  * ======================================================================== */
 
+/** Create a basic credential from an identity byte string. Returns NULL on failure. */
 mlspp_credential_t* mlspp_credential_basic(
     const uint8_t* identity, size_t identity_len);
+
+/** Create an X.509 credential from a DER certificate chain. Returns NULL on failure. */
 mlspp_credential_t* mlspp_credential_x509(
     const uint8_t* const* der_chain, const size_t* der_chain_lens,
     size_t chain_count);
+
+/** Free a credential handle. */
 void mlspp_credential_free(mlspp_credential_t* cred);
 
 /** Returns the credential type (1=basic, 2=x509). */
@@ -183,6 +222,7 @@ uint16_t mlspp_credential_type(const mlspp_credential_t* cred);
 
 /** Create default capabilities. */
 mlspp_capabilities_t* mlspp_capabilities_create_default(void);
+/** Free a capabilities handle. */
 void mlspp_capabilities_free(mlspp_capabilities_t* caps);
 
 /* ========================================================================
@@ -194,6 +234,7 @@ mlspp_lifetime_t* mlspp_lifetime_create_default(void);
 
 /** Create lifetime with explicit bounds. */
 mlspp_lifetime_t* mlspp_lifetime_create(uint64_t not_before, uint64_t not_after);
+/** Free a lifetime handle. */
 void mlspp_lifetime_free(mlspp_lifetime_t* lt);
 
 /* ========================================================================
@@ -202,6 +243,7 @@ void mlspp_lifetime_free(mlspp_lifetime_t* lt);
 
 /** Create an empty extension list. */
 mlspp_extension_list_t* mlspp_extension_list_create(void);
+/** Free an extension list handle. */
 void mlspp_extension_list_free(mlspp_extension_list_t* exts);
 
 /** Add a raw extension. */
@@ -231,6 +273,7 @@ mlspp_leaf_node_t* mlspp_leaf_node_create(
     const mlspp_lifetime_t* lifetime,
     const mlspp_extension_list_t* exts,
     const mlspp_signature_private_key_t* sig_priv);
+/** Free a leaf node handle. */
 void mlspp_leaf_node_free(mlspp_leaf_node_t* ln);
 
 /** Get the credential from a leaf node. Caller must free. */
@@ -258,6 +301,7 @@ mlspp_key_package_t* mlspp_key_package_create(
     const mlspp_leaf_node_t* leaf_node,
     const mlspp_extension_list_t* exts,
     const mlspp_signature_private_key_t* sig_priv);
+/** Free a key package handle. */
 void mlspp_key_package_free(mlspp_key_package_t* kp);
 
 /** Verify the key package signatures. Returns 1 if valid, 0 if not. */
@@ -277,6 +321,7 @@ mlspp_leaf_node_t* mlspp_key_package_leaf_node(const mlspp_key_package_t* kp);
  * MLSMessage
  * ======================================================================== */
 
+/** Free an MLS message handle. */
 void mlspp_mls_message_free(mlspp_mls_message_t* msg);
 
 /** Get the group_id from an MLSMessage. Caller must free bytes. */
@@ -292,12 +337,14 @@ uint16_t mlspp_mls_message_wire_format(const mlspp_mls_message_t* msg);
  * Welcome
  * ======================================================================== */
 
+/** Free a Welcome message handle. */
 void mlspp_welcome_free(mlspp_welcome_t* w);
 
 /* ========================================================================
  * GroupInfo
  * ======================================================================== */
 
+/** Free a GroupInfo handle. */
 void mlspp_group_info_free(mlspp_group_info_t* gi);
 
 /* ========================================================================
@@ -327,13 +374,21 @@ mlspp_state_t* mlspp_state_create_from_welcome(
     const mlspp_key_package_t* key_package,
     const mlspp_welcome_t* welcome);
 
+/** Free a State handle. */
 void mlspp_state_free(mlspp_state_t* state);
 
 /* --- Accessors --- */
 
+/** Get the group ID. Caller must free returned bytes with mlspp_bytes_free. */
 mlspp_bytes_t mlspp_state_group_id(const mlspp_state_t* state);
+
+/** Get the current epoch number. */
 uint64_t mlspp_state_epoch(const mlspp_state_t* state);
+
+/** Get this member's leaf index in the group. */
 uint32_t mlspp_state_index(const mlspp_state_t* state);
+
+/** Get the cipher suite used by this group. Caller must free result. */
 mlspp_cipher_suite_t* mlspp_state_cipher_suite(const mlspp_state_t* state);
 
 /** Export a secret. Caller must free returned bytes. */
@@ -424,11 +479,13 @@ mlspp_bytes_t mlspp_state_unprotect(
 
 /* --- PSK management --- */
 
+/** Register an external PSK with the group state. */
 void mlspp_state_add_external_psk(
     mlspp_state_t* state,
     const uint8_t* id, size_t id_len,
     const uint8_t* secret, size_t secret_len);
 
+/** Remove a previously registered external PSK by ID. */
 void mlspp_state_remove_external_psk(
     mlspp_state_t* state,
     const uint8_t* id, size_t id_len);
@@ -437,10 +494,13 @@ void mlspp_state_remove_external_psk(
  * Client / Session (high-level API)
  * ======================================================================== */
 
+/** Create a new Client with the given cipher suite, signing key, and credential. Returns NULL on failure. */
 mlspp_client_t* mlspp_client_create(
     const mlspp_cipher_suite_t* cs,
     const mlspp_signature_private_key_t* sig_priv,
     const mlspp_credential_t* cred);
+
+/** Free a Client handle. */
 void mlspp_client_free(mlspp_client_t* client);
 
 /** Begin a new session (create a group). Caller must free returned session. */
@@ -453,6 +513,7 @@ mlspp_pending_join_t* mlspp_client_start_join(const mlspp_client_t* client);
 
 /* --- PendingJoin --- */
 
+/** Free a PendingJoin handle. */
 void mlspp_pending_join_free(mlspp_pending_join_t* pj);
 
 /** Get the serialized key package. Caller must free bytes. */
@@ -465,8 +526,10 @@ mlspp_session_t* mlspp_pending_join_complete(
 
 /* --- Session --- */
 
+/** Free a Session handle. */
 void mlspp_session_free(mlspp_session_t* session);
 
+/** Enable or disable handshake message encryption (0=plaintext, 1=encrypted). */
 void mlspp_session_encrypt_handshake(mlspp_session_t* session, int enabled);
 
 /** Add a member by key package data. Returns serialized proposal. */
@@ -523,16 +586,23 @@ mlspp_bytes_t mlspp_session_unprotect(
     mlspp_session_t* session,
     const uint8_t* ciphertext, size_t ciphertext_len);
 
+/** Get the current epoch number. */
 uint64_t mlspp_session_epoch(const mlspp_session_t* session);
+
+/** Get this member's leaf index in the group. */
 uint32_t mlspp_session_index(const mlspp_session_t* session);
+
+/** Get the cipher suite ID used by this session. */
 uint16_t mlspp_session_cipher_suite(const mlspp_session_t* session);
 
+/** Export a secret from the session. Caller must free returned bytes with mlspp_bytes_free. */
 mlspp_bytes_t mlspp_session_do_export(
     const mlspp_session_t* session,
     const char* label,
     const uint8_t* context, size_t context_len,
     size_t size);
 
+/** Get the epoch authenticator. Caller must free returned bytes with mlspp_bytes_free. */
 mlspp_bytes_t mlspp_session_epoch_authenticator(
     const mlspp_session_t* session);
 

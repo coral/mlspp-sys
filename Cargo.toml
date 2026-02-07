@@ -7,6 +7,7 @@ license = "MIT"
 keywords = ["bindings", "crypto"]
 categories = ["cryptography"]
 description = "Messaging Layer Security system bindings crate in Rust"
+readme = "README.md"
 repository = "https://github.com/coral/mlspp-sys"
 exclude = [
     "vendor/json/docs/",
