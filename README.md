@@ -20,7 +20,7 @@ key management for groups of any size.
 |---------|---------|-------------|
 | `vendored` | **yes** | Build mlspp from the vendored source tree via CMake |
 | `system` | no | Link against a system-installed mlspp |
-| `libdave-compat` | no | Enable compatibility with Discord's libdave MLS fork |
+| `libdave-compat` | no | Enable compatibility with Discord's `libdave` |
 
 ## Build requirements
 
