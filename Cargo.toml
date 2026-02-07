@@ -8,6 +8,17 @@ keywords = ["bindings", "crypto"]
 categories = ["cryptography"]
 description = "Messaging Layer Security system bindings crate in Rust"
 repository = "https://github.com/coral/mlspp-sys"
+exclude = [
+    "vendor/json/docs/",
+    "vendor/json/tests/",
+    "vendor/json/tools/",
+    "vendor/mlspp/lib/hpke/test/",
+    "vendor/mlspp/lib/hpke/scripts/",
+    "vendor/mlspp/test/",
+    "vendor/mlspp/cmd/",
+    "vendor/mlspp/alternatives/",
+    "vendor/mlspp/scripts/",
+]
 
 [dependencies]
 openssl-sys = "0.9"
