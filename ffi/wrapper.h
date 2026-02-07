@@ -396,7 +396,8 @@ mlspp_mls_message_t* mlspp_state_commit(
  * Handle an incoming MLS message.
  * Returns a new State if the message causes a state transition (e.g. commit),
  * or NULL if it's a proposal (cached internally) or on error.
- * Check mlspp_last_error() to distinguish proposal from error.
+ * On success (including cached proposal), mlspp_last_error() returns NULL.
+ * On failure, mlspp_last_error() returns a non-NULL error string.
  */
 mlspp_state_t* mlspp_state_handle(
     mlspp_state_t* state,
@@ -538,6 +539,19 @@ mlspp_bytes_t mlspp_session_epoch_authenticator(
 /* ========================================================================
  * TLS serialization helpers
  * ======================================================================== */
+
+/**
+ * Serialize a GroupInfo to TLS wire format.
+ * Caller must free returned bytes.
+ */
+mlspp_bytes_t mlspp_group_info_serialize(const mlspp_group_info_t* gi);
+
+/**
+ * Deserialize a GroupInfo from TLS wire format.
+ * Returns NULL on failure.
+ */
+mlspp_group_info_t* mlspp_group_info_deserialize(
+    const uint8_t* data, size_t data_len);
 
 /**
  * Serialize a KeyPackage to TLS wire format.

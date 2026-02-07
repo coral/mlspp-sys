@@ -175,26 +175,32 @@ extern "C" mlspp_cipher_suite_t* mlspp_cipher_suite_create(uint16_t id) {
 }
 
 extern "C" void mlspp_cipher_suite_free(mlspp_cipher_suite_t* cs) {
+    if (!cs) return;
     delete cs;
 }
 
 extern "C" uint16_t mlspp_cipher_suite_id(const mlspp_cipher_suite_t* cs) {
+    if (!cs) return 0;
     return static_cast<uint16_t>(cs->inner.cipher_suite());
 }
 
 extern "C" uint16_t mlspp_cipher_suite_signature_scheme(const mlspp_cipher_suite_t* cs) {
+    if (!cs) return 0;
     return static_cast<uint16_t>(cs->inner.signature_scheme());
 }
 
 extern "C" size_t mlspp_cipher_suite_secret_size(const mlspp_cipher_suite_t* cs) {
+    if (!cs) return 0;
     return cs->inner.secret_size();
 }
 
 extern "C" size_t mlspp_cipher_suite_key_size(const mlspp_cipher_suite_t* cs) {
+    if (!cs) return 0;
     return cs->inner.key_size();
 }
 
 extern "C" size_t mlspp_cipher_suite_nonce_size(const mlspp_cipher_suite_t* cs) {
+    if (!cs) return 0;
     return cs->inner.nonce_size();
 }
 
@@ -241,16 +247,19 @@ extern "C" mlspp_hpke_private_key_t* mlspp_hpke_private_key_parse(
 }
 
 extern "C" void mlspp_hpke_private_key_free(mlspp_hpke_private_key_t* key) {
+    if (!key) return;
     delete key;
 }
 
 extern "C" mlspp_bytes_t mlspp_hpke_private_key_data(
     const mlspp_hpke_private_key_t* key) {
+    if (!key) return { nullptr, 0 };
     return to_mlspp_bytes(key->inner.data);
 }
 
 extern "C" mlspp_hpke_public_key_t* mlspp_hpke_private_key_public_key(
     const mlspp_hpke_private_key_t* key) {
+    if (!key) return nullptr;
     return new mlspp_hpke_public_key_t{ key->inner.public_key };
 }
 
@@ -288,11 +297,13 @@ extern "C" mlspp_hpke_public_key_t* mlspp_hpke_public_key_from_data(
 }
 
 extern "C" void mlspp_hpke_public_key_free(mlspp_hpke_public_key_t* key) {
+    if (!key) return;
     delete key;
 }
 
 extern "C" mlspp_bytes_t mlspp_hpke_public_key_data(
     const mlspp_hpke_public_key_t* key) {
+    if (!key) return { nullptr, 0 };
     return to_mlspp_bytes(key->inner.data);
 }
 
@@ -365,16 +376,19 @@ extern "C" mlspp_signature_private_key_t* mlspp_signature_private_key_parse(
 
 extern "C" void mlspp_signature_private_key_free(
     mlspp_signature_private_key_t* key) {
+    if (!key) return;
     delete key;
 }
 
 extern "C" mlspp_bytes_t mlspp_signature_private_key_data(
     const mlspp_signature_private_key_t* key) {
+    if (!key) return { nullptr, 0 };
     return to_mlspp_bytes(key->inner.data);
 }
 
 extern "C" mlspp_signature_public_key_t* mlspp_signature_private_key_public_key(
     const mlspp_signature_private_key_t* key) {
+    if (!key) return nullptr;
     return new mlspp_signature_public_key_t{ key->inner.public_key };
 }
 
@@ -408,11 +422,13 @@ extern "C" mlspp_signature_public_key_t* mlspp_signature_public_key_from_data(
 
 extern "C" void mlspp_signature_public_key_free(
     mlspp_signature_public_key_t* key) {
+    if (!key) return;
     delete key;
 }
 
 extern "C" mlspp_bytes_t mlspp_signature_public_key_data(
     const mlspp_signature_public_key_t* key) {
+    if (!key) return { nullptr, 0 };
     return to_mlspp_bytes(key->inner.data);
 }
 
@@ -470,10 +486,12 @@ extern "C" mlspp_credential_t* mlspp_credential_x509(
 }
 
 extern "C" void mlspp_credential_free(mlspp_credential_t* cred) {
+    if (!cred) return;
     delete cred;
 }
 
 extern "C" uint16_t mlspp_credential_type(const mlspp_credential_t* cred) {
+    if (!cred) return 0;
     return static_cast<uint16_t>(cred->inner.type());
 }
 
@@ -486,6 +504,7 @@ extern "C" mlspp_capabilities_t* mlspp_capabilities_create_default(void) {
 }
 
 extern "C" void mlspp_capabilities_free(mlspp_capabilities_t* caps) {
+    if (!caps) return;
     delete caps;
 }
 
@@ -506,6 +525,7 @@ extern "C" mlspp_lifetime_t* mlspp_lifetime_create(
 }
 
 extern "C" void mlspp_lifetime_free(mlspp_lifetime_t* lt) {
+    if (!lt) return;
     delete lt;
 }
 
@@ -518,6 +538,7 @@ extern "C" mlspp_extension_list_t* mlspp_extension_list_create(void) {
 }
 
 extern "C" void mlspp_extension_list_free(mlspp_extension_list_t* exts) {
+    if (!exts) return;
     delete exts;
 }
 
@@ -539,7 +560,8 @@ extern "C" int mlspp_extension_list_add(
 
 extern "C" int mlspp_extension_list_has(
     const mlspp_extension_list_t* exts, uint16_t ext_type) {
-    return exts->inner.has(ext_type) ? 1 : 0;
+    if (!exts) return 0;
+    return exts->inner.has(static_cast<ns::Extension::Type>(ext_type)) ? 1 : 0;
 }
 
 /* ========================================================================
@@ -574,21 +596,25 @@ extern "C" mlspp_leaf_node_t* mlspp_leaf_node_create(
 }
 
 extern "C" void mlspp_leaf_node_free(mlspp_leaf_node_t* ln) {
+    if (!ln) return;
     delete ln;
 }
 
 extern "C" mlspp_credential_t* mlspp_leaf_node_credential(
     const mlspp_leaf_node_t* ln) {
+    if (!ln) return nullptr;
     return new mlspp_credential_t{ ln->inner.credential };
 }
 
 extern "C" mlspp_signature_public_key_t* mlspp_leaf_node_signature_key(
     const mlspp_leaf_node_t* ln) {
+    if (!ln) return nullptr;
     return new mlspp_signature_public_key_t{ ln->inner.signature_key };
 }
 
 extern "C" mlspp_hpke_public_key_t* mlspp_leaf_node_encryption_key(
     const mlspp_leaf_node_t* ln) {
+    if (!ln) return nullptr;
     return new mlspp_hpke_public_key_t{ ln->inner.encryption_key };
 }
 
@@ -618,6 +644,7 @@ extern "C" mlspp_key_package_t* mlspp_key_package_create(
 }
 
 extern "C" void mlspp_key_package_free(mlspp_key_package_t* kp) {
+    if (!kp) return;
     delete kp;
 }
 
@@ -643,11 +670,13 @@ extern "C" mlspp_bytes_t mlspp_key_package_ref(const mlspp_key_package_t* kp) {
 
 extern "C" mlspp_cipher_suite_t* mlspp_key_package_cipher_suite(
     const mlspp_key_package_t* kp) {
+    if (!kp) return nullptr;
     return new mlspp_cipher_suite_t{ kp->inner.cipher_suite };
 }
 
 extern "C" mlspp_leaf_node_t* mlspp_key_package_leaf_node(
     const mlspp_key_package_t* kp) {
+    if (!kp) return nullptr;
     return new mlspp_leaf_node_t{ kp->inner.leaf_node };
 }
 
@@ -656,6 +685,7 @@ extern "C" mlspp_leaf_node_t* mlspp_key_package_leaf_node(
  * ======================================================================== */
 
 extern "C" void mlspp_mls_message_free(mlspp_mls_message_t* msg) {
+    if (!msg) return;
     delete msg;
 }
 
@@ -682,6 +712,7 @@ extern "C" uint64_t mlspp_mls_message_epoch(const mlspp_mls_message_t* msg) {
 
 extern "C" uint16_t mlspp_mls_message_wire_format(
     const mlspp_mls_message_t* msg) {
+    if (!msg) return 0;
     return static_cast<uint16_t>(msg->inner.wire_format());
 }
 
@@ -690,10 +721,12 @@ extern "C" uint16_t mlspp_mls_message_wire_format(
  * ======================================================================== */
 
 extern "C" void mlspp_welcome_free(mlspp_welcome_t* w) {
+    if (!w) return;
     delete w;
 }
 
 extern "C" void mlspp_group_info_free(mlspp_group_info_t* gi) {
+    if (!gi) return;
     delete gi;
 }
 
@@ -748,25 +781,30 @@ extern "C" mlspp_state_t* mlspp_state_create_from_welcome(
 }
 
 extern "C" void mlspp_state_free(mlspp_state_t* state) {
+    if (!state) return;
     delete state;
 }
 
 /* --- Accessors --- */
 
 extern "C" mlspp_bytes_t mlspp_state_group_id(const mlspp_state_t* state) {
+    if (!state) return { nullptr, 0 };
     return to_mlspp_bytes(state->inner.group_id());
 }
 
 extern "C" uint64_t mlspp_state_epoch(const mlspp_state_t* state) {
+    if (!state) return 0;
     return state->inner.epoch();
 }
 
 extern "C" uint32_t mlspp_state_index(const mlspp_state_t* state) {
+    if (!state) return 0;
     return state->inner.index().val;
 }
 
 extern "C" mlspp_cipher_suite_t* mlspp_state_cipher_suite(
     const mlspp_state_t* state) {
+    if (!state) return nullptr;
     return new mlspp_cipher_suite_t{ state->inner.cipher_suite() };
 }
 
@@ -790,6 +828,7 @@ extern "C" mlspp_bytes_t mlspp_state_do_export(
 
 extern "C" mlspp_bytes_t mlspp_state_epoch_authenticator(
     const mlspp_state_t* state) {
+    if (!state) return { nullptr, 0 };
     return to_mlspp_bytes(state->inner.epoch_authenticator());
 }
 
@@ -899,6 +938,8 @@ extern "C" mlspp_state_t* mlspp_state_handle(
         if (result) {
             return new mlspp_state_t{ std::move(*result) };
         }
+        // Proposal was cached successfully. Error stays cleared so callers
+        // can distinguish this from a failure (where mlspp_last_error != NULL).
         return nullptr;
     } catch (const std::exception& e) {
         set_error(e.what());
@@ -949,6 +990,7 @@ extern "C" void mlspp_state_add_external_psk(
     mlspp_state_t* state,
     const uint8_t* id, size_t id_len,
     const uint8_t* secret, size_t secret_len) {
+    if (!state) return;
     state->inner.add_external_psk(
         to_bytes(id, id_len), to_bytes(secret, secret_len));
 }
@@ -956,6 +998,7 @@ extern "C" void mlspp_state_add_external_psk(
 extern "C" void mlspp_state_remove_external_psk(
     mlspp_state_t* state,
     const uint8_t* id, size_t id_len) {
+    if (!state) return;
     state->inner.remove_external_psk(to_bytes(id, id_len));
 }
 
@@ -978,6 +1021,7 @@ extern "C" mlspp_client_t* mlspp_client_create(
 }
 
 extern "C" void mlspp_client_free(mlspp_client_t* client) {
+    if (!client) return;
     delete client;
 }
 
@@ -1012,6 +1056,7 @@ extern "C" mlspp_pending_join_t* mlspp_client_start_join(
  * ======================================================================== */
 
 extern "C" void mlspp_pending_join_free(mlspp_pending_join_t* pj) {
+    if (!pj) return;
     delete pj;
 }
 
@@ -1045,11 +1090,13 @@ extern "C" mlspp_session_t* mlspp_pending_join_complete(
  * ======================================================================== */
 
 extern "C" void mlspp_session_free(mlspp_session_t* session) {
+    if (!session) return;
     delete session;
 }
 
 extern "C" void mlspp_session_encrypt_handshake(
     mlspp_session_t* session, int enabled) {
+    if (!session) return;
     session->inner.encrypt_handshake(enabled != 0);
 }
 
@@ -1188,15 +1235,18 @@ extern "C" mlspp_bytes_t mlspp_session_unprotect(
 }
 
 extern "C" uint64_t mlspp_session_epoch(const mlspp_session_t* session) {
+    if (!session) return 0;
     return session->inner.epoch();
 }
 
 extern "C" uint32_t mlspp_session_index(const mlspp_session_t* session) {
+    if (!session) return 0;
     return session->inner.index().val;
 }
 
 extern "C" uint16_t mlspp_session_cipher_suite(
     const mlspp_session_t* session) {
+    if (!session) return 0;
     return static_cast<uint16_t>(session->inner.cipher_suite().cipher_suite());
 }
 
@@ -1220,12 +1270,38 @@ extern "C" mlspp_bytes_t mlspp_session_do_export(
 
 extern "C" mlspp_bytes_t mlspp_session_epoch_authenticator(
     const mlspp_session_t* session) {
+    if (!session) return { nullptr, 0 };
     return to_mlspp_bytes(session->inner.epoch_authenticator());
 }
 
 /* ========================================================================
  * TLS serialization helpers
  * ======================================================================== */
+
+extern "C" mlspp_bytes_t mlspp_group_info_serialize(
+    const mlspp_group_info_t* gi) {
+    clear_error();
+    try {
+        auto data = ns::tls::marshal(gi->inner);
+        return to_mlspp_bytes(data);
+    } catch (const std::exception& e) {
+        set_error(e.what());
+        return { nullptr, 0 };
+    }
+}
+
+extern "C" mlspp_group_info_t* mlspp_group_info_deserialize(
+    const uint8_t* data, size_t data_len) {
+    clear_error();
+    try {
+        auto b = to_bytes(data, data_len);
+        auto gi = ns::tls::get<ns::GroupInfo>(b);
+        return new mlspp_group_info_t{ std::move(gi) };
+    } catch (const std::exception& e) {
+        set_error(e.what());
+        return nullptr;
+    }
+}
 
 extern "C" mlspp_bytes_t mlspp_key_package_serialize(
     const mlspp_key_package_t* kp) {

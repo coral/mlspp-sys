@@ -1,8 +1,13 @@
 [package]
 name = "mlspp-sys"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 links = "mlspp"
+license = "MIT"
+keywords = ["bindings", "crypto"]
+categories = ["cryptography"]
+description = "Messaging Layer Security system bindings crate in Rust"
+repository = "https://github.com/coral/mlspp-sys"
 
 [dependencies]
 openssl-sys = "0.9"
